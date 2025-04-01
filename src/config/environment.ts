@@ -3,7 +3,6 @@ import { ConfigurationError } from '../errors.js';
 
 export interface CodingDevOpsConfig {
   token: string;
-  project: string;
   apiUrl: string;
 }
 
@@ -17,18 +16,13 @@ function validateConfigValue(value: string | undefined, name: string): string {
 }
 
 export function createConfig(options?: Partial<CodingDevOpsConfig>): CodingDevOpsConfig {
-  const PAT = validateConfigValue(
+  const TOKEN = validateConfigValue(
     options?.token ?? env.CODING_TOKEN,
     'Personal Access Token (token)'
   );
-  const PROJECT = validateConfigValue(
-    options?.project ?? env.PROJECT,
-    'Project (project)'
-  );
 
   return {
-    token: PAT,
-    project: PROJECT,
+    token: TOKEN,
     apiUrl: `https://e.coding.net/open-api`,
   };
 }

@@ -10,7 +10,7 @@ export async function createIssue(args: {
   description: string;
 }, config: CodingDevOpsConfig) {
   if (!args.projectName) {
-    throw new McpError(ErrorCode.InvalidParams, 'Project name is required');
+    throw new McpError(ErrorCode.InvalidParams, 'projectName01 is required');
   }
   if (!args.name) {
     throw new McpError(ErrorCode.InvalidParams, 'Name is required');

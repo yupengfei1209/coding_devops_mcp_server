@@ -91,6 +91,7 @@ export var ErrorCode;
     ErrorCode["InvalidParams"] = "invalid_params";
     ErrorCode["MethodNotFound"] = "method_not_found";
     ErrorCode["InternalError"] = "internal_error";
+    ErrorCode["ProjectCreateFailed"] = "project_create_failed";
 })(ErrorCode || (ErrorCode = {}));
 /**
  * MCP错误类

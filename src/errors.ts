@@ -96,6 +96,7 @@ export enum ErrorCode {
   InvalidParams = 'invalid_params',
   MethodNotFound = 'method_not_found',
   InternalError = 'internal_error',
+  ProjectCreateFailed = 'project_create_failed',
 }
 
 /**

@@ -9,7 +9,7 @@ export async function listIssues(args: {
   limit?: string;
 }, config: CodingDevOpsConfig) {
   if (!args.projectName) {
-    throw new McpError(ErrorCode.InvalidParams, 'Project name is required');
+    throw new McpError(ErrorCode.InvalidParams, 'projectName03 is required');
   }
 
   CodingConnection.initialize(config);

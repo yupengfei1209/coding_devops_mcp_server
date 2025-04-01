@@ -7,7 +7,7 @@ export async function deleteIssue(args: {
   issueCode: number;
 }, config: CodingDevOpsConfig) {
   if (!args.projectName) {
-    throw new McpError(ErrorCode.InvalidParams, 'Project name is required');
+    throw new McpError(ErrorCode.InvalidParams, 'projectName02 is required');
   }
   if (!args.issueCode) {
     throw new McpError(ErrorCode.InvalidParams, 'Issue code is required');

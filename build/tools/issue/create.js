@@ -2,7 +2,7 @@ import { CodingConnection } from '../../api/coding_connection.js';
 import { McpError, ErrorCode } from '../../errors.js';
 export async function createIssue(args, config) {
     if (!args.projectName) {
-        throw new McpError(ErrorCode.InvalidParams, 'Project name is required');
+        throw new McpError(ErrorCode.InvalidParams, 'projectName01 is required');
     }
     if (!args.name) {
         throw new McpError(ErrorCode.InvalidParams, 'Name is required');

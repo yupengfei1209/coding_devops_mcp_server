@@ -74,6 +74,12 @@ class CodingDevOpsServer {
                     case 'list_projects':
                         result = await tools.project.listProjects(request.params.arguments);
                         break;
+                    case 'create_project':
+                        result = await tools.project.createProject(request.params.arguments);
+                        break;
+                    case 'delete_project':
+                        result = await tools.project.deleteProject(request.params.arguments);
+                        break;
                     // 工作项工具
                     case 'list_work_items':
                         result = await tools.issue.listIssues(request.params.arguments);

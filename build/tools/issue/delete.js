@@ -2,7 +2,7 @@ import { CodingConnection } from '../../api/coding_connection.js';
 import { McpError, ErrorCode } from '../../errors.js';
 export async function deleteIssue(args, config) {
     if (!args.projectName) {
-        throw new McpError(ErrorCode.InvalidParams, 'Project name is required');
+        throw new McpError(ErrorCode.InvalidParams, 'projectName02 is required');
     }
     if (!args.issueCode) {
         throw new McpError(ErrorCode.InvalidParams, 'Issue code is required');

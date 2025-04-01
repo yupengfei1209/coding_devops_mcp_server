@@ -2,7 +2,7 @@ import { ErrorCode, McpError } from '@modelcontextprotocol/sdk/types.js';
 import { CodingConnection } from '../../api/coding_connection.js';
 export async function listIssues(args, config) {
     if (!args.projectName) {
-        throw new McpError(ErrorCode.InvalidParams, 'Project name is required');
+        throw new McpError(ErrorCode.InvalidParams, 'projectName03 is required');
     }
     CodingConnection.initialize(config);
     const connection = CodingConnection.getInstance();

@@ -11,13 +11,10 @@ interface CodingUser {
 }
 
 interface CodingProject {
-  Id: number;
-  Name: string;
-  DisplayName: string;
-  Description: string;
-  Icon: string;
-  CreatedAt: number;
-  UpdatedAt: number;
+  Id?: number;
+  Name?: string;
+  DisplayName?: string;
+  Description?: string;
 }
 
 interface CodingIssue {
@@ -212,5 +209,63 @@ export class CodingConnection {
         }
       }
     );
+  }
+
+  public async deleteProject(params: {
+    ProjectId: string;
+  }): Promise<void> {
+    const requestBody = {
+      Action: 'DeleteOneProject',
+      ProjectId: params.ProjectId
+    };
+
+    await axios.post(
+      `${CodingConnection.config.apiUrl}/?Action=DeleteOneProject`,
+      requestBody,
+      {
+        headers: {
+          'Authorization': `token ${CodingConnection.config.token}`,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      }
+    );
+  }
+
+  public async createProject(params: {
+    displayName: string;
+    name: string;
+    description?: string;
+    projectTemplate?: string;
+    shared?: string;
+  }): Promise<CodingProject> {
+    const requestBody = {
+      DisplayName: params.displayName,
+      Name: params.name,
+      Description: params.description || '',
+      ProjectTemplate: params.projectTemplate || 'DEV_OPS',
+      Shared: params.shared || "0"
+    };
+
+    const response = await axios.post<{
+      Response: {
+        ProjectId: number;
+        RequestId: string;
+      };
+    }>(
+      `${CodingConnection.config.apiUrl}/?Action=CreateCodingProject`,
+      requestBody,
+      {
+        headers: {
+          'Authorization': `token ${CodingConnection.config.token}`,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      }
+    );
+
+    return {
+      Id: response.data.Response.ProjectId
+    };
   }
 }

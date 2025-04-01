@@ -7,11 +7,9 @@ function validateConfigValue(value, name) {
     return value.trim();
 }
 export function createConfig(options) {
-    const PAT = validateConfigValue(options?.token ?? env.CODING_TOKEN, 'Personal Access Token (token)');
-    const PROJECT = validateConfigValue(options?.project ?? env.PROJECT, 'Project (project)');
+    const TOKEN = validateConfigValue(options?.token ?? env.CODING_TOKEN, 'Personal Access Token (token)');
     return {
-        token: PAT,
-        project: PROJECT,
+        token: TOKEN,
         apiUrl: `https://e.coding.net/open-api`,
     };
 }

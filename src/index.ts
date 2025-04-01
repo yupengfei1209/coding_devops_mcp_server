@@ -7,8 +7,6 @@ import {
   ListToolsRequestSchema,
   McpError,
   JSONRPCResponseSchema,
-  ListPromptsRequestSchema,
-  GetPromptRequestSchema,
   JSONRPCResponse
 } from '@modelcontextprotocol/sdk/types.js';
 
@@ -106,6 +104,12 @@ class CodingDevOpsServer {
           // 项目工具
           case 'list_projects':
             result = await tools.project.listProjects(request.params.arguments);
+            break;
+          case 'create_project':
+            result = await tools.project.createProject(request.params.arguments);
+            break;
+          case 'delete_project':
+            result = await tools.project.deleteProject(request.params.arguments);
             break;
           // 工作项工具
           case 'list_work_items':

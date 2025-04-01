@@ -103,4 +103,36 @@ export class CodingConnection {
             }
         });
     }
+    async deleteProject(params) {
+        const requestBody = {
+            Action: 'DeleteOneProject',
+            ProjectId: params.ProjectId
+        };
+        await axios.post(CodingConnection.config.apiUrl, requestBody, {
+            headers: {
+                'Authorization': `token ${CodingConnection.config.token}`,
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        });
+    }
+    async createProject(params) {
+        const requestBody = {
+            DisplayName: params.displayName,
+            Name: params.name,
+            Description: params.description || '',
+            ProjectTemplate: params.projectTemplate || 'DEV_OPS',
+            Shared: params.shared || "0"
+        };
+        const response = await axios.post(`${CodingConnection.config.apiUrl}/?Action=CreateCodingProject`, requestBody, {
+            headers: {
+                'Authorization': `token ${CodingConnection.config.token}`,
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        });
+        return {
+            Id: response.data.Response.ProjectId
+        };
+    }
 }
