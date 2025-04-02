@@ -10,7 +10,9 @@ export async function listProjects(args, config) {
             content: [
                 {
                     type: 'text',
-                    text: `Projects: ${projects.map((project) => `${project.Name} (${project.DisplayName})`).join(', ')}`,
+                    text: `**Projects**\n${projects.map(project => `- **${project.Name}** (${project.DisplayName || 'No display name'})
+          - ID: ${project.Id || 'N/A'}
+          - Description: ${project.Description || 'No description provided'}\n`).join('\n')}`,
                 },
             ],
         };

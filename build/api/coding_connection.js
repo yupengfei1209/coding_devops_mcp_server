@@ -108,7 +108,7 @@ export class CodingConnection {
             Action: 'DeleteOneProject',
             ProjectId: params.ProjectId
         };
-        await axios.post(CodingConnection.config.apiUrl, requestBody, {
+        await axios.post(`${CodingConnection.config.apiUrl}/?Action=DeleteOneProject`, requestBody, {
             headers: {
                 'Authorization': `token ${CodingConnection.config.token}`,
                 'Content-Type': 'application/json',
@@ -134,5 +134,21 @@ export class CodingConnection {
         return {
             Id: response.data.Response.ProjectId
         };
+    }
+    async listProjectDepots(params) {
+        const requestBody = {
+            Action: 'DescribeProjectDepotInfoList',
+            ProjectId: params.ProjectId,
+            PageNumber: params.PageNumber || '1',
+            PageSize: params.PageSize || '20'
+        };
+        const response = await axios.post(`${CodingConnection.config.apiUrl}/?Action=DescribeProjectDepotInfoList`, requestBody, {
+            headers: {
+                'Authorization': `token ${CodingConnection.config.token}`,
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        });
+        return response.data.Response.DepotData;
     }
 }

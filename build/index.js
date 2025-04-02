@@ -5,6 +5,7 @@ import { CallToolRequestSchema, ErrorCode, ListToolsRequestSchema, McpError } fr
 // 导入所有工具
 import { issueTools } from './tools/issue/index.js';
 import { projectTools } from './tools/project/index.js';
+import { codeTools } from './tools/code/index.js';
 import { createConfig } from './config/environment.js';
 // 类型验证
 function validateArgs(args, errorMessage) {
@@ -38,11 +39,13 @@ class CodingDevOpsServer {
         const toolInstances = {
             issue: issueTools.initialize(this.config),
             project: projectTools.initialize(this.config),
+            code: codeTools.initialize(this.config),
         };
         // 合并所有工具定义
         this.toolDefinitions = [
             ...toolInstances.issue.definitions,
             ...toolInstances.project.definitions,
+            ...toolInstances.code.definitions,
         ];
         this.server = new Server({
             name: 'coding-devops-mcp-server',
@@ -89,6 +92,10 @@ class CodingDevOpsServer {
                         break;
                     case 'delete_work_item':
                         result = await tools.issue.deleteIssue(request.params.arguments);
+                        break;
+                    // 代码工具
+                    case 'list_depots':
+                        result = await tools.code.listDepots(request.params.arguments);
                         break;
                     default:
                         throw new McpError(ErrorCode.MethodNotFound, `未知工具: ${request.params.name}`);

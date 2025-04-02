@@ -25,6 +25,41 @@ interface CodingIssue {
   [key: string]: any; // 其他可能的字段
 }
 
+interface CodingDepot {
+  CreatedAt: number;
+  DefaultBranch: string;
+  Description: string;
+  GroupId: number;
+  GroupName: string;
+  GroupType: string;
+  HttpsUrl: string;
+  Id: number;
+  LastPushAt: number;
+  Name: string;
+  ProjectId: number;
+  ProjectName: string;
+  RepoType: string;
+  SshUrl: string;
+  VcsType: string;
+  WebUrl: string;
+  IsShared: string;
+}
+
+interface CodingDepotResponse {
+  Response: {
+    DepotData: {
+      Depots: CodingDepot[];
+      Page: {
+        PageNumber: number;
+        PageSize: number;
+        TotalPage: number;
+        TotalRow: number;
+      };
+    };
+    RequestId: string;
+  };
+}
+
 interface CodingUserResponse {
   Response: {
     User: CodingUser;
@@ -267,5 +302,32 @@ export class CodingConnection {
     return {
       Id: response.data.Response.ProjectId
     };
+  }
+
+  public async listProjectDepots(params: {
+    ProjectId: string;
+    PageNumber?: string;
+    PageSize?: string;
+  }): Promise<CodingDepotResponse['Response']['DepotData']> {
+    const requestBody = {
+      Action: 'DescribeProjectDepotInfoList',
+      ProjectId: params.ProjectId,
+      PageNumber: params.PageNumber || '1',
+      PageSize: params.PageSize || '20'
+    };
+
+    const response = await axios.post<CodingDepotResponse>(
+      `${CodingConnection.config.apiUrl}/?Action=DescribeProjectDepotInfoList`,
+      requestBody,
+      {
+        headers: {
+          'Authorization': `token ${CodingConnection.config.token}`,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      }
+    );
+
+    return response.data.Response.DepotData;
   }
 }
