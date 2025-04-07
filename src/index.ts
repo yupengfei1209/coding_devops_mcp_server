@@ -127,6 +127,9 @@ class CodingDevOpsServer {
           case 'describe_issue':
             result = await tools.issue.describeIssue(request.params.arguments);
             break;
+          case 'decompose_issue':
+            result = await tools.issue.decomposeIssue(request.params.arguments);
+            break;
           // 代码工具
           case 'list_depots':
             result = await tools.code.listDepots(request.params.arguments);

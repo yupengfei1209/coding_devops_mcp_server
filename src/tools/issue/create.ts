@@ -8,6 +8,7 @@ export async function createIssue(args: {
   type: string;
   priority: string;
   description: string;
+  parentCode?: number;
 }, config: CodingDevOpsConfig) {
   if (!args.projectName) {
     throw new McpError(ErrorCode.InvalidParams, 'projectName01 is required');
@@ -42,7 +43,8 @@ export async function createIssue(args: {
     name: args.name,
     type: args.type,
     priority: args.priority,
-    description: args.description
+    description: args.description,
+    parentCode: args.parentCode
   });
 
   return {

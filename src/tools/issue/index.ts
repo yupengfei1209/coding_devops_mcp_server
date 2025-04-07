@@ -1,5 +1,6 @@
 
 import { listIssues } from './list.js';
+import { decomposeIssue } from './decompose.js';
 import { createIssue } from './create.js';
 import { deleteIssue } from './delete.js';
 import { describeIssue } from './describe.js';
@@ -53,6 +54,10 @@ const definitions = [
         description: {
           type: 'string',
           description: '事项描述',
+        },
+        parentCode: {
+          type: 'number',
+          description: '父事项编号，如果设置了此字段，创建的事项将成为该父事项的子事项',
         }
       },
       required: ['projectName', 'name', 'type', 'priority', 'description'],
@@ -93,6 +98,46 @@ const definitions = [
       },
       required: ['projectName', 'issueCode'],
     }
+  },
+  {
+    name: 'decompose_issue',
+    description: '将一个需求拆解为多个子任务',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        projectName: {
+          type: 'string',
+          description: '项目名称，注意是项目的 name 不是 displayName',
+        },
+        parentIssueCode: {
+          type: 'number',
+          description: '父需求的编号',
+        },
+        subTasks: {
+          type: 'array',
+          description: '子任务列表',
+          items: {
+            type: 'object',
+            properties: {
+              name: {
+                type: 'string',
+                description: '子任务名称',
+              },
+              description: {
+                type: 'string',
+                description: '子任务描述',
+              },
+              priority: {
+                type: 'string',
+                description: '优先级，可选值为：0 - 低 1 - 中 2 - 高 3 - 紧急',
+              }
+            },
+            required: ['name', 'description', 'priority']
+          }
+        }
+      },
+      required: ['projectName', 'parentIssueCode', 'subTasks'],
+    }
   }
 ];
 
@@ -109,6 +154,7 @@ export const issueTools = {
       type: string;
       priority: string;
       description: string;
+      parentCode?: number;
     }) => createIssue(args, config),
     deleteIssue: (args: {
       projectName: string;
@@ -118,6 +164,15 @@ export const issueTools = {
       projectName: string;
       issueCode: number;
     }) => describeIssue(args, config),
+    decomposeIssue: (args: {
+      projectName: string;
+      parentIssueCode: number;
+      subTasks: Array<{
+        name: string;
+        description: string;
+        priority: string;
+      }>;
+    }) => decomposeIssue(args, config),
     definitions,
   }),
   definitions,

@@ -167,6 +167,7 @@ export class CodingConnection {
     type: string;
     priority: string;
     description: string;
+    parentCode?: number;
   }): Promise<CodingIssue> {
     const requestBody = {
       Action: 'CreateIssue',
@@ -174,7 +175,8 @@ export class CodingConnection {
       Name: params.name,
       Type: params.type,
       Priority: params.priority,
-      Description: params.description
+      Description: params.description,
+      ParentCode: params.parentCode
     };
 
     const response = await axios.post<{
@@ -335,6 +337,7 @@ export class CodingConnection {
       Id: response.data.Response.ProjectId
     };
   }
+
 
   public async listProjectDepots(params: {
     ProjectId: string;
