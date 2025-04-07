@@ -2,6 +2,7 @@
 import { listIssues } from './list.js';
 import { createIssue } from './create.js';
 import { deleteIssue } from './delete.js';
+import { describeIssue } from './describe.js';
 import { CodingDevOpsConfig } from '../../config/environment.js';
 
 const definitions = [
@@ -13,7 +14,7 @@ const definitions = [
       properties: {
         projectName: {
           type: 'string',
-          description: '项目名称',
+          description: '项目名称，注意是项目的 name 不是 displayName,建议先通过 list_projects 查看项目名称',
         },
         issueType: {
           type: 'string',
@@ -74,6 +75,24 @@ const definitions = [
       },
       required: ['projectName', 'issueCode'],
     }
+  },
+  {
+    name: 'describe_issue',
+    description: '查询事项详情',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        projectName: {
+          type: 'string',
+          description: '项目名称',
+        },
+        issueCode: {
+          type: 'number',
+          description: '事项编号',
+        }
+      },
+      required: ['projectName', 'issueCode'],
+    }
   }
 ];
 
@@ -90,11 +109,15 @@ export const issueTools = {
       type: string;
       priority: string;
       description: string;
-    }) => createIssue (args, config),
+    }) => createIssue(args, config),
     deleteIssue: (args: {
       projectName: string;
       issueCode: number;
     }) => deleteIssue(args, config),
+    describeIssue: (args: {
+      projectName: string;
+      issueCode: number;
+    }) => describeIssue(args, config),
     definitions,
   }),
   definitions,

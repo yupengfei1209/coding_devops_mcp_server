@@ -115,22 +115,23 @@ class CodingDevOpsServer {
             result = await tools.project.deleteProject(request.params.arguments);
             break;
           // 工作项工具
-          case 'list_work_items':
+          case 'list_issues':
             result = await tools.issue.listIssues(request.params.arguments);
             break;
-          case 'create_work_item':
+          case 'create_issue':
             result = await tools.issue.createIssue(request.params.arguments);
             break;
-          case 'delete_work_item':
+          case 'delete_issue':
             result = await tools.issue.deleteIssue(request.params.arguments);
+            break;
+          case 'describe_issue':
+            result = await tools.issue.describeIssue(request.params.arguments);
             break;
           // 代码工具
           case 'list_depots':
             result = await tools.code.listDepots(request.params.arguments);
             break;
 
-
-          
           
           default:
             throw new McpError(

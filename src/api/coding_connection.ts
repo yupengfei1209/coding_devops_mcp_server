@@ -81,6 +81,13 @@ interface CodingIssuesResponse {
   };
 }
 
+interface CodingIssueResponse {
+  Response: {
+    Issue: CodingIssue;
+    RequestId: string;
+  };
+}
+
 export class CodingConnection {
   private static instance: CodingConnection | null = null;
   private static config: CodingDevOpsConfig;
@@ -221,6 +228,31 @@ export class CodingConnection {
     );
 
     return response.data.Response.IssueList;
+  }
+
+  public async describeIssue(params: {
+    projectName: string;
+    issueCode: number;
+  }): Promise<CodingIssue> {
+    const requestBody = {
+      Action: 'DescribeIssue',
+      ProjectName: params.projectName,
+      IssueCode: params.issueCode
+    };
+
+    const response = await axios.post<CodingIssueResponse>(
+      CodingConnection.config.apiUrl,
+      requestBody,
+      {
+        headers: {
+          'Authorization': `token ${CodingConnection.config.token}`,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      }
+    );
+
+    return response.data.Response.Issue;
   }
 
   public async deleteIssue(params: {
