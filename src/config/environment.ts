@@ -4,6 +4,7 @@ import { ConfigurationError } from '../errors.js';
 export interface CodingDevOpsConfig {
   token: string;
   apiUrl: string;
+  workingDirectory?: string;
 }
 
 function validateConfigValue(value: string | undefined, name: string): string {

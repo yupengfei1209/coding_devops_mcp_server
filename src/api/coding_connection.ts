@@ -60,6 +60,37 @@ interface CodingDepotResponse {
   };
 }
 
+interface CodingMergeRequestResponse {
+  Response: {
+    MergeInfo: {
+      MergeRequestId: number;
+      MergeRequestUrl: string;
+      MergeRequestInfo: {
+        Id: number;
+        MergeId: number;
+        Title: string;
+        Describe: string;
+        Status: string;
+        TargetBranch: string;
+        SourceBranch: string;
+      };
+    };
+    RequestId: string;
+  };
+}
+
+interface CodingProjectResponse {
+  Response: {
+    Project: {
+      Id: number;
+      Name: string;
+      DisplayName: string;
+      [key: string]: any;
+    };
+    RequestId: string;
+  };
+}
+
 interface CodingUserResponse {
   Response: {
     User: CodingUser;
@@ -364,5 +395,57 @@ export class CodingConnection {
     );
 
     return response.data.Response.DepotData;
+  }
+
+  public async createMergeRequest(params: {
+    DepotPath: string;
+    Title: string;
+    Content: string;
+    SrcBranch: string;
+    DestBranch: string;
+  }): Promise<CodingMergeRequestResponse['Response']> {
+    const requestBody = {
+      Action: 'CreateGitMergeReq',
+      DepotPath: params.DepotPath,
+      Title: params.Title,
+      Content: params.Content,
+      SrcBranch: params.SrcBranch,
+      DestBranch: params.DestBranch
+    };
+
+    const response = await axios.post<CodingMergeRequestResponse>(
+      `${CodingConnection.config.apiUrl}/?Action=CreateGitMergeReq`,
+      requestBody,
+      {
+        headers: {
+          'Authorization': `token ${CodingConnection.config.token}`,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      }
+    );
+
+    return response.data.Response;
+  }
+
+  public async getProjectByName(projectName: string): Promise<CodingProjectResponse['Response']> {
+    const requestBody = {
+      Action: 'DescribeProjectByName',
+      ProjectName: projectName
+    };
+
+    const response = await axios.post<CodingProjectResponse>(
+      `${CodingConnection.config.apiUrl}/?Action=DescribeProjectByName`,
+      requestBody,
+      {
+        headers: {
+          'Authorization': `token ${CodingConnection.config.token}`,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      }
+    );
+
+    return response.data.Response;
   }
 }
