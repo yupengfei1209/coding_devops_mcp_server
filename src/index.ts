@@ -137,6 +137,9 @@ class CodingDevOpsServer {
           case 'create_merge_request':
             result = await tools.code.createMergeRequest(request.params.arguments);
             break;
+          case 'list_commits':
+            result = await tools.code.listCommits(request.params.arguments);
+            break;
 
           
           default:

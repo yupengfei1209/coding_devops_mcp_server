@@ -60,6 +60,39 @@ interface CodingDepotResponse {
   };
 }
 
+interface CodingCommitAuthor {
+  Email: string;
+  Name: string;
+}
+
+interface CodingCommit {
+  Sha: string;
+  ShortMessage: string;
+  FullMessage: string;
+  CommitDate: number;
+  CreatedAt: number;
+  AuthorName: string;
+  AuthorEmail: string;
+  Author: CodingCommitAuthor;
+  Committer: CodingCommitAuthor;
+  Parents: string[];
+}
+
+interface CodingCommitsResponse {
+  Response: {
+    Data: {
+      Commits: CodingCommit[];
+      Page: {
+        PageNumber: number;
+        PageSize: number;
+        TotalPage: number;
+        TotalRow: number;
+      };
+    };
+    RequestId: string;
+  };
+}
+
 interface CodingMergeRequestResponse {
   Response: {
     MergeInfo: {
@@ -447,5 +480,44 @@ export class CodingConnection {
     );
 
     return response.data.Response;
+  }
+
+  public async describeGitCommits(params: {
+    DepotId?: string;
+    DepotPath?: string;
+    Ref: string;
+    EndDate?: string;
+    StartDate?: string;
+    KeyWord?: string;
+    PageNumber?: string;
+    PageSize?: string;
+    Path?: string;
+  }): Promise<CodingCommitsResponse['Response']['Data']> {
+    const requestBody = {
+      Action: 'DescribeGitCommitsInPage',
+      DepotId: params.DepotId,
+      DepotPath: params.DepotPath,
+      Ref: params.Ref,
+      EndDate: params.EndDate,
+      StartDate: params.StartDate,
+      KeyWord: params.KeyWord,
+      PageNumber: params.PageNumber || '1',
+      PageSize: params.PageSize || '20',
+      Path: params.Path
+    };
+
+    const response = await axios.post<CodingCommitsResponse>(
+      `${CodingConnection.config.apiUrl}/?Action=DescribeGitCommitsInPage`,
+      requestBody,
+      {
+        headers: {
+          'Authorization': `token ${CodingConnection.config.token}`,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      }
+    );
+
+    return response.data.Response.Data;
   }
 }
